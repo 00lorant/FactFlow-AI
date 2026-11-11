@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FactFlow AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090d18;color:#f4f7fb;font-family:Arial,sans-serif}
+header{padding:20px 7%;border-bottom:1px solid #263247;font-size:21px;font-weight:bold}
+.logo{color:#8c80ff}
+main{max-width:850px;margin:55px auto;padding:20px}
+.hero{text-align:center;margin-bottom:30px}
+.hero small{color:#a99fff;letter-spacing:2px}
+h1{font-size:42px;margin:12px 0}
+p{color:#9aa8bd}
+.panel{background:#131d2e;border:1px solid #293750;border-radius:18px;padding:24px}
+label{display:block;margin:18px 0 8px;font-weight:bold;font-size:14px}
+textarea,select{width:100%;padding:14px;background:#0b1220;color:white;border:1px solid #34435d;border-radius:10px;font-size:15px}
+textarea{height:150px;resize:vertical}
+.options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+button{width:100%;padding:16px;margin-top:24px;border:0;border-radius:10px;background:linear-gradient(100deg,#7565f6,#409eea);color:white;font-weight:bold;font-size:16px}
+#status{text-align:center;font-size:13px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.feature{padding:16px;background:#131d2e;border:1px solid #293750;border-radius:12px}
+.feature strong{display:block;margin:8px 0}
+.feature p{font-size:12px;margin-bottom:0}
+@media(max-width:600px){.options,.features{grid-template-columns:1fr}h1{font-size:32px}main{margin-top:30px}}
+</style>
+</head>
+<body>
+<header><span class="logo">F</span> FactFlow AI</header>
+<main>
+<section class="hero">
+<small>YOUR AI VIDEO STUDIO</small>
+<h1>Turn your ideas into videos.</h1>
+<p>Enter a topic or script and create a complete video.</p>
+</section>
+
+<section class="panel">
+<label for="script">What should your video be about?</label>
+<textarea id="script" placeholder="Example: Create a video about 10 amazing facts about space..."></textarea>
+
+<div class="options">
+<div>
+<label for="duration">Video length</label>
+<select id="duration">
+<option>1 minute</option>
+<option>2 minutes</option>
+<option>3 minutes</option>
+<option>5 minutes</option>
+<option>10 minutes</option>
+</select>
+</div>
+<div>
+<label for="voice">Voice style</label>
+<select id="voice">
+<option>Warm and clear</option>
+<option>Energetic</option>
+<option>Documentary</option>
+<option>News style</option>
+</select>
+</div>
+<div>
+<label for="format">Video format</label>
+<select id="format">
+<option>Vertical 9:16</option>
+<option>Landscape 16:9</option>
+<option>Square 1:1</option>
+</select>
+</div>
+</div>
+
+<button id="generate">Create My Video</button>
+<p id="status">Your video creation tools will be connected soon.</p>
+</section>
+
+<section class="features">
+<div class="feature">🎬<strong>Smart visuals</strong><p>Images and video scenes matched to your script.</p></div>
+<div class="feature">🎙️<strong>AI narration</strong><p>Voiceovers, music and synchronized captions.</p></div>
+<div class="feature">📁<strong>MP4 export</strong><p>Export your completed video.</p></div>
+</section>
+</main>
+<script>
+document.getElementById("generate").addEventListener("click",function(){
+const script=document.getElementById("script").value.trim();
+const status=document.getElementById("status");
+if(!script){
+status.textContent="Please enter a topic or script first.";
+return;
+}
+status.textContent="Your interface is ready. The video-generation engine is coming next.";
+});
+</script>
+</body>
+</html>
