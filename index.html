@@ -83,14 +83,48 @@ button{width:100%;padding:16px;margin-top:24px;border:0;border-radius:10px;backg
 </section>
 </main>
 <script>
-document.getElementById("generate").addEventListener("click",function(){
-const script=document.getElementById("script").value.trim();
-const status=document.getElementById("status");
-if(!script){
-status.textContent="Please enter a topic or script first.";
-return;
-}
-status.textContent="Your interface is ready. The video-generation engine is coming next.";
+document.getElementById("generate").addEventListener("click", async function(){
+    const script = document.getElementById("script").value.trim();
+    const duration = document.getElementById("duration").value;
+    const voice = document.getElementById("voice").value;
+    const videoFormat = document.getElementById("format").value;
+    const status = document.getElementById("status");
+    const button = document.getElementById("generate");
+
+    if (!script) {
+        status.textContent = "Please enter a topic or script first.";
+        return;
+    }
+
+    button.disabled = true;
+    status.textContent = "Sending your video request...";
+
+    try {
+        const response = await fetch("/api/generate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                script: script,
+                duration: duration,
+                voice: voice,
+                format: videoFormat
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || "Something went wrong.");
+        }
+
+        status.textContent = "Request received! Your job ID is: " + result.job_id;
+    } catch (error) {
+        status.textContent = "Could not send request: " + error.message;
+    } finally {
+        button.disabled = false;
+    }
 });
 </script>
 </body>
