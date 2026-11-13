@@ -102,9 +102,7 @@ document.getElementById("generate").addEventListener("click", async function(){
     try {
         const response = await fetch("/api/generate", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 script: script,
                 duration: duration,
@@ -119,9 +117,47 @@ document.getElementById("generate").addEventListener("click", async function(){
             throw new Error(result.error || "Something went wrong.");
         }
 
-        status.textContent = "Request received! Your job ID is: " + result.job_id;
+        const jobId = result.job_id;
+        status.textContent = "Your video is being created...";
+
+        let attempts = 0;
+
+        while (attempts < 300) {
+            await new Promise(resolve => setTimeout(resolve, 3000));
+
+            const statusResponse = await fetch("/api/status/" + jobId);
+            const job = await statusResponse.json();
+
+            if (!statusResponse.ok) {
+                throw new Error(job.error || "Could not check video status.");
+            }
+
+            status.textContent = job.message || "Creating your video...";
+
+            if (job.status === "completed") {
+                status.textContent = "Your video is ready! ";
+
+                const link = document.createElement("a");
+                link.href = job.video_url;
+                link.textContent = "Download MP4";
+                link.style.color = "#a99fff";
+                link.target = "_blank";
+
+                status.appendChild(link);
+                return;
+            }
+
+            if (job.status === "failed") {
+                throw new Error(job.message || "Video generation failed.");
+            }
+
+            attempts++;
+        }
+
+        throw new Error("This is taking longer than expected. Please try again.");
+
     } catch (error) {
-        status.textContent = "Could not send request: " + error.message;
+        status.textContent = "Could not create video: " + error.message;
     } finally {
         button.disabled = false;
     }
